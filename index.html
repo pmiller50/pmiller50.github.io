@@ -404,12 +404,16 @@ When evaluating multiple targets, some of which are desirable and some not, metr
 
         <div class="row">
           <div class="col-lg-10 pt-4 pt-lg-0 content">
-            <p>Interest in Artificial Intelligence and text generation spiked in May of 2020, when Open AI Labs released a new version of their deep
-              learning model called GPT-3. GPT-3 is a highly trained text generation engine built by reading 45 TB of data from public web sites,
-              and electronic books and other sources. GPT-3 uses 175 billion parameters, and produces an amazingly high level of quality text.</p>
+            <p>This project was hosted in a private Kaggle competition by General Assembly.
+              The objective was to create a machine learning model based on the
+              <a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques/overview">Ames Housing</a> dataset.
+<br><br>
+            <p>Ames is the home of Iowa State University (ISU), a large public university, whose 33,000 students make up half of
+              the town's population. With the university being such an integral part of the society in Ames,
+              would the real estate value be relatively higher in neighborhoods that are closer to the school campus?</p>
 
-            <br>
-            <p>This project attempts to pursue if and how a simple text generator could be built, and whether the quality of the output text could pass as something legible and understood by humans.</p>
+             <p>This model will predict the sale price of a house when sold, and attempt to determine if a house near the Institute
+               campus has a premium of at least 5%</p>
           </div>
 
       </div>
@@ -419,45 +423,57 @@ When evaluating multiple targets, some of which are desirable and some not, metr
           <div class="resume-item col-lg-10">
           <h5>Data</h5>
 
-  <p>All text generation models require a group of text, also called a corpus. This project used the BeautifulSoup Python library to scan
-  the <a href="https://www.ted.com/talks">TED.com library browse page</a> to retrieve a list of URLs for all talks in English.
+  <p>The Ames Housing Dataset contains over 70 columns of different features relating to houses.</p>
 
-  This list of all talks can then be used to scrape the transcript text for each talk.</p>
+<p>In order to accurately predict home values near or far from Iowa State, we need to categorize the 28 neighborhoods found in the data.
 
+Neighborhoods will be separated into two groups:
   <ul>
-  <li>Scraping TED.com created a corpus of 4,384 talks.</li>
-  <li>Using the entire corpus overloaded the Google Colab environement, so a smaller corpus of just the top 20 most viewed talks was used.</li>
-  <li>Top 20 talks transcripts consisted of approximately 270,000 characters.
+  <li>Near Iowa State</li>
+  <li>Not Near Iowa State</li>
   </ul>
 
+<p>Neighborhood identification was performed manually, using a best guess from Google maps and other online real estate sources.<br>
+<img src="./assets/img/ISU_Hoods.png" width="750" height="499" alt="ISU neighborhoods"></p>
+
   <h5>Modeling</h5>
-  <p>Text generation with machine learning is essentially a multiclass classification problem.</p>
-  <p>Classes are the labels assigned to the next character or word a model is predicting, also known as it's target variable (y).
-  <br>
-  For example, in the sentence "Welcome to my TED talk.", a model uses a sequence length of 8, would use the first 8 characters as its input variables, in order to predict the 9th character.
-  </p>
-  <img src="./assets/img/welcome_2.png" width="300" height="329" alt="character prediction">
-  <br><br>
-  <p>Various configurations of Long Short Term Memory recurrent neural networks were used to create models to predict (generate) characters, after
-  being trained on the corpus.
+  <p>A small feature set was included along with all neighborhood data, in order to capture a wider range of inputs. These were chosen somewhat arbitrarily:
+  <ul>
+  <li>Overall Qual</li>
+  <li>Year Built</li>
+  <li>1st Flr SF</li>
+  <li>2nd Flr SF</li>
+  <li>Garage Cars</li>
+  <li>bathrooms (a new feature created to combine four separate bathroom items)</li>
+  <li>Lot Shape</li>
+  <li>near_ISU (a new categorical feature showing whether a house is in one of the six neighborhoods close to the Iowa State campus)</li>
+  </ul>
+</p>
+
+<p>Models performed:
+<ul>
+<li>Linear Regression</li>
+<li>Lasso Regression</li>
+<li>Ridge Regression</li>
+</ul>
+</p>
 
   <h5>Output</h5>
-  <p>Using a starting point of a random 40 character sequence in the corpus, the model was used to predict the next 600 characters.</p>
-  <p>The output text was fairly accurate for the early portions of text, but then would become unreadable.
+  <p>The near_ISU feature had a positive correlation on the predicted home prices in the Ames, IA dataset,
+    shown here to be $3,122. In other words, we expect to see an $3,122 rise in price for all homes in the seven surrounding neighborhoods,
+    holding all other items constant.<br>
+<img src="./assets/img/near_ISU_result.png" width="219" height="267" alt="ISU features and coefficients"></p>
 
-  (The original 40 character sequence in <b><span style="color:red">red</span></b>.)</p>
-
-  <blockquote>
-  <b><span style="color:red">re can do it faster. Lowcost providers c</span></b>an do it cheaper. So what really matters are the more rightbrained creative conceptual kinds of abilities. This is no surprise though if you look at the insights of contemporary psychology. It turns out that we cant even be in a group of people without instingtively mindlrming something tr musi but one in this woul world. I tas 190 million people didd from this kind of worthiness. Fo earter. When youre io the lowert resson there because when they cid that.with the pame thing. The sewr of shis ptise of this lide of madies and shose are amrays that farcer. When you choose to view stress in this
-  </blockquote>
 
   <h5>Conclusions</h5>
-  <p>In general, it seems as if the models would predict the next characters and sometimes words, but it begs the question:
-  Is this text generation? At times the text generated was simply a repeat of a different, randomly selected portion of the corpus.
-   It's possible that a larger corpus would provide a larger vocabulary, and more randomness,
-   hence presenting a more interesting output.</p>
+  <p>To determine if this is above a 5% threshold, we calculate the mean price of all homes in the training set.
+<br>
+The average price of all houses in the data set is: $180,995.11.
+5 percent of the average is $9,049.76.
 
-  <em>More information and full readme found in the <a href="https://github.com/pmiller50/ted_talk_gen">Github repository</a>.</em>
+Since $3,122 is less than 5%, we reject the null hypothesis that properties located in neighborhoods near ISU have at least a 5% price premium.</p>
+
+  <em>More information and full readme found in the <a href="https://github.com/pmiller50/Ames_Housing">Github repository</a>.</em>
   <br><br>
 
         </div>
