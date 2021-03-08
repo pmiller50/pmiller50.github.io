@@ -5,21 +5,6 @@
 * License: https://bootstrapmade.com/license/
 */
 
-th, td {
-  padding: 10px;
-  text-align: left;
-}
-
-blockquote
-{
-  font-style: normal;
-  font-size: 16px;
-  margin-left: 32px;
-  font-family: Consolas, "Times New Roman", Verdana;
-  border-left: 4px solid #CCC;
-  padding-left: 8px;
-}
-
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -466,7 +451,7 @@ section {
 .resume .resume-item {
   padding: 0 0 20px 20px;
   margin-top: -2px;
-  border-left: 0px solid #1f5297;
+  border-left: 2px solid #1f5297;
   position: relative;
 }
 
@@ -501,7 +486,17 @@ section {
   padding-bottom: 0;
 }
 
-
+.resume .resume-item::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50px;
+  left: -9px;
+  top: 0;
+  background: #fff;
+  border: 2px solid #1f5297;
+}
 
 /*--------------------------------------------------------------
 # Portfolio
